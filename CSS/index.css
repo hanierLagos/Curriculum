@@ -7,6 +7,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f0f2f5;
   color: #2c3e50;
+  overflow-x: hidden; /* Evita scroll horizontal al ocultar sidebar */
 }
 
 .cv-container {
@@ -43,7 +44,7 @@ body {
   border-radius: 50%;
   border: 4px solid white;
   margin-bottom: 10px;
-  cursor: pointer; /* para el toggle */
+  cursor: pointer;
 }
 .contact-info {
   list-style: none;
@@ -51,9 +52,15 @@ body {
   margin-top: 20px;
   text-align: left;
 }
+.contact-info h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #ffeb3b;
+}
 .contact-info li {
   margin-bottom: 10px;
   font-size: 14px;
+  word-break: break-word; /* evita overflow de textos largos */
 }
 .contact-info a {
   color: #ffeb3b;
@@ -61,11 +68,6 @@ body {
 }
 .contact-info a:hover {
   text-decoration: underline;
-}
-.contact-info h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #ffeb3b;
 }
 .section-title {
   margin-top: 30px;
@@ -134,50 +136,30 @@ body {
   margin-left: 20px;
 }
 
-/* ——— OFF‑CANVAS EN RESPONSIVE ——— */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: -280px;
-    width: 280px;
-    height: 100%;
-    z-index: 1000;
-  }
-  .sidebar.open {
-    left: 0;
-  }
-  .cv-container.shifted {
-    margin-left: 280px;
-    transition: margin-left 0.3s ease;
-  }
-  .profile-pic {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    z-index: 1001;
-  }
-}
 /* ——— OFF‑CANVAS EN DISPOSITIVOS MÓVILES Y TABLETS ——— */
 @media (max-width: 1024px) {
+  /* Ocultar sidebar fuera de pantalla */
   .sidebar {
     position: fixed;
     top: 0;
-    left: -280px;
+    left: -100%;
     width: 280px;
-    height: 100%;
+    height: 100vh;        /* llenar todo el alto de la pantalla */
+    overflow-y: auto;     /* habilita scroll vertical */
+    -webkit-overflow-scrolling: touch; /* optimiza el scroll en iOS */
     z-index: 1000;
-    transition: left 0.3s ease;
   }
   .sidebar.open {
     left: 0;
   }
+
+  /* Empuja contenido sólo cuando sidebar abierto */
   .cv-container.shifted {
     margin-left: 280px;
     transition: margin-left 0.3s ease;
   }
+
+  /* Foto-toggle fija */
   .profile-pic {
     position: fixed;
     top: 20px;
@@ -186,5 +168,14 @@ body {
     height: 50px;
     z-index: 1001;
   }
-}
 
+  /* El resto del layout pasa a 100% de ancho */
+  .cv-container {
+    flex-direction: column;
+    margin: 20px;
+  }
+  .main-content {
+    width: 100%;
+    padding: 20px;
+  }
+}
